@@ -3,7 +3,7 @@
     "name": "My app",
     "slug": "my-app",
     "android": {
-      "package": "com.pozdno_4.myapp"
+      "package": "*"
     }
   }
 }
