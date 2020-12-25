@@ -1,11 +1,14 @@
 import * as React from 'react';
-import { View, Text,StyleSheet, SafeAreaView, ScrollView,TextInput,Button } from 'react-native';
+import { View, Text,StyleSheet, SafeAreaView, ScrollView,TextInput,Button} from 'react-native';
 import { Image,Badge } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import CommentComponent from '../components/CommentComponent'
+import { TouchableHighlight } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage'
+
 
 export default class ProductScreen extends React.Component {
 
@@ -17,7 +20,8 @@ this.state = {
   comments: [],
   counter: 1,
   amount: 0,
-  price: 0
+  price: 0,
+  status: ''
 }
 
 }
@@ -60,13 +64,27 @@ increment() {
     price: this.state.price + this.state.amount 
   })
 }
+buy() {
+  AsyncStorage.getItem('user').then(e=> {
+    if (e != null) {
+  fetch('http://127.0.0.1:8000/api/tocart',{method:'POST',body: JSON.stringify({id:this.props.route.params?.id,iduser:e, amount: this.state.counter})})
+      .then((response) => response.json())
+      .then((json) => {
 
+          this.props.navigation.navigate('Profile')
+        
+      })
+      .catch((error) => console.error(error))
+}
+    })
+}
 
 
 render() {
   	return (
   	<SafeAreaView>
   		<ScrollView>
+      
         <View  style={styles.maincontainer}>
 		    	<View style={styles.container}>
 			    	<Image source={require('../images/ps5.jpg')} style={styles.image} />
@@ -89,16 +107,17 @@ render() {
             </View>
           </View>
           <View style={styles.costSection}>
-            <Text style={styles.costInner}>{this.state.price}$</Text>
+            <TouchableHighlight onPress={this.buy.bind(this)} ><Text style={styles.costInner}>{this.state.price}$</Text></TouchableHighlight>
           </View>
       </View>
 
 		    </View>
+      
 		    <View style={styles.CommentSection}>
 		    	<Text style={styles.titleh1}>Comments</Text>
 		    	<TextInput placeholder='Title' style={styles.inputTitle} />
 		    	<TextInput multiline={true} numberOfLines={2} style={styles.TextArea}  placeholder='Describe'/>
-		    	<Button title="SEND" color="#1f8adc"  style={styles.SendButton}/>
+		    	<Button title="SEND" color="#1f8adc" onPress={this.buy.bind(this)}  style={styles.SendButton}/>
 		    </View>
 		    <View style={styles.listOfComments}>
 		    	{this.state.comments}

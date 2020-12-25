@@ -1,19 +1,21 @@
 import * as React from 'react';
 import { View, Text,StyleSheet } from 'react-native';
 import { Button,Input,Image,Icon,Badge } from 'react-native-elements';
-
+import { useNavigation } from '@react-navigation/native';
 import { TouchableHighlight } from 'react-native';
 
 
 export default function CartComponent(props) {
+
+  const navigation = useNavigation();
+
   return (
-  	<TouchableHighlight>
+  	<TouchableHighlight onPress={() => navigation.navigate('Product',{id:props.id})}>
       <View  style={styles.CommentInner}>
-            <Image source={require('../images/ps5.jpg')} style={styles.imageComment} />
             <View style={styles.infoCommentSection}>
               <Text style={styles.commentH1}>{props.title}</Text>
               <Text style={styles.commentp}>{props.describe}</Text>
-              <Text style={styles.commentp}>Price: {props.raiting}</Text>
+              <Text style={styles.commentp}>Price: {props.price}</Text>
             </View>
       </View>
 	</TouchableHighlight>
@@ -24,7 +26,6 @@ export default function CartComponent(props) {
 const styles = StyleSheet.create({
   imageComment: {
     width: 60, 
-  height: 60,
   borderBottomRightRadius:30
   },
   CommentInner: {
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
     fontWeight:'bold'
   },
   commentp: {
-    fontSize: 10
+    fontSize: 10,
+    width:250
   }
 });

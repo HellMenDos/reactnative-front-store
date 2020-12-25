@@ -1,13 +1,16 @@
 import * as React from 'react';
-import { View, Text,StyleSheet } from 'react-native';
+import { View, Text,StyleSheet,TouchableHighlight } from 'react-native';
 import { Button,Input,Image,Icon,Badge } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
 
-import { TouchableHighlight } from 'react-native';
+
 
 
 export default function ProductComponent(props) {
+  const navigation = useNavigation();
+
   return (
-  	<TouchableHighlight onPress={() => props.route.navigate('Product',{id:props.id})}>
+  	<TouchableHighlight onPress={() => navigation.navigate('Product',{id:props.id})}>
 		<View style={styles.otherproducts}>
 			<Image source={{uri: `http://127.0.0.1:8000/images/product/${props.photo}`}} style={styles.imageBottom} />
 				<View style={styles.TextBottom}>

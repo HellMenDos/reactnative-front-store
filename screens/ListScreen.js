@@ -11,16 +11,27 @@ export default class ListScreen extends React.Component  {
 constructor(props) {
 super(props)
 
+this.myRef = React.createRef();
+
 this.state = {
 	element: [],
 	counter: 0
 }
 
+
 }
 
-componentDidMount() {
 
-fetch('http://127.0.0.1:8000/api/allProducts')
+componentDidMount() {
+    var input;
+     if (this.props.route.params?.input == undefined) {
+        input = 'http://127.0.0.1:8000/api/allProducts'
+     }else {
+        this.myRef.current.input.value = this.props.route.params?.input
+        input = 'http://127.0.0.1:8000/api/getproducts/'+ this.props.route.params?.input
+     }
+
+fetch(input)
     .then((response) => response.json())
     .then((json) => {
  
@@ -40,7 +51,14 @@ fetch('http://127.0.0.1:8000/api/allProducts')
 
 }
 searhFunction(e) {
-	fetch('http://127.0.0.1:8000/api/getproducts/'+e.target.value)
+    var input
+    if (e.target.value.length == 0) {
+        input = 'http://127.0.0.1:8000/api/allProducts'
+    }else {
+        input = 'http://127.0.0.1:8000/api/getproducts/'+e.target.value
+    }
+
+	fetch(input)
     .then((response) => response.json())
     .then((json) => {
  
@@ -65,7 +83,7 @@ render() {
   	return (
   	<View>
 	  	<View style={styles.searchSection}>
-			<Input placeholder='Search' style={styles.searchInput} onChange={this.searhFunction.bind(this)} />
+			<Input placeholder='Search' ref={this.myRef}  style={styles.searchInput} onChange={this.searhFunction.bind(this)} />
 		</View>
 	  	<SafeAreaView style={styles.searchContent}>
 	  		<ScrollView>

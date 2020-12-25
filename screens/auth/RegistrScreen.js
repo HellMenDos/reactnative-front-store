@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { View, Text,StyleSheet, SafeAreaView, ScrollView,TextInput,AsyncStorage } from 'react-native';
+import { View, Text,StyleSheet, SafeAreaView, ScrollView,TextInput } from 'react-native';
 import { Image,Badge,Avatar,Input, Button} from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-community/async-storage'
 
 
 export default class RegistrScreen extends React.Component {
@@ -23,15 +24,15 @@ registr() {
   if (this.state.password == this.state.confirm) {
   fetch('http://127.0.0.1:8000/api/registr/',{method:"POST",body: JSON.stringify({email: this.state.email,password: this.state.password,name:this.state.name})})
     .then((response) => response.json())
-    .then( (json) => {
+    .then( async (json) => {
         console.log(json)
         if (json.error) {
           var error = Object.keys(json.error)[0];
 
           this.setState({error: <Badge status="error" value={<Text>{json.error[error][0]}</Text>} />})
         }else {
-          console.log(json.success)
-     //     await AsyncStorage.setItem('id', json.success.id);
+        
+       await AsyncStorage.setItem('user', json.success.id);
           this.props.navigation.navigate('profile')
         }
     })

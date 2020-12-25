@@ -19,7 +19,7 @@ useEffect(() => {
   }, [])
 
 const listItems = data.map((d) =>
-    <ProductComponent title={d.title} describe={d.describe} price={d.price} photo={d.photos[0].url}/>
+    <ProductComponent title={d.title} id={d.id} describe={d.describe} price={d.price} photo={d.photos[0].url}/>
   );
 
 
@@ -30,16 +30,16 @@ return (
 		    	<View style={styles.container}>
 			    	<Image source={require('../images/ps5.jpg')} style={styles.image} />
 					<View style={styles.newproductsconteiner}>
-						<TouchableHighlight style={styles.newproducts}>
+						<TouchableHighlight   onPress={() => navigation.navigate('List',{input:'games'})}  style={styles.newproducts}>
 							<Image source={require('../images/game.jpg')} style={styles.imageSidebar} />
 						</TouchableHighlight>
-						<TouchableHighlight onPress={() => navigation.navigate('Product',{id:1})} style={styles.newproducts}>
+						<TouchableHighlight onPress={() => navigation.navigate('List',{input:'console'})} style={styles.newproducts}>
 							<Image source={require('../images/console.jpg')} style={styles.imageSidebar} />
 						</TouchableHighlight>
-						<TouchableHighlight style={styles.newproducts}>
+						<TouchableHighlight  onPress={() => navigation.navigate('List',{input:'attr'})}  style={styles.newproducts}>
 							<Image source={require('../images/yer.jpg')} style={styles.imageSidebar} />
 						</TouchableHighlight>
-						<TouchableHighlight style={styles.newproducts}>
+						<TouchableHighlight  onPress={() => navigation.navigate('List',{input:'custom'})}  style={styles.newproducts}>
 							<Image source={require('../images/custom.jpeg')} style={styles.imageSidebar} />
 						</TouchableHighlight>
 					</View>

@@ -10,7 +10,8 @@ export default class ForgetScreen extends React.Component {
 constructor(props) {
   super(props);
   this.state = {
-    email: ''
+    email: '',
+    success: ''
   };
 };
 
@@ -18,7 +19,9 @@ forget() {
   fetch('http://127.0.0.1:8000/api/forget/',{method:"POST",body: JSON.stringify({email: this.state.email })})
     .then((response) => response.json())
     .then((json) => {
-        console.log(json)
+        if (json.success) {
+          this.setState({success: <Badge status="success" value={<Text>Check your email</Text>} />})
+        }
     })
     .catch((error) => {
       console.error(error);
@@ -32,6 +35,7 @@ render() {
   		<ScrollView>
           <View style={styles.container}>
               <Text style={styles.cartH1}>Forget password</Text>
+              {this.state.success}
               <Input placeholder='Name' style={{marginTop:30}}  onChangeText={(text) => this.setState({email:text})} />
               <View style={{width:350}}>
                 <Button title="Change" onPress={this.forget.bind(this)} />
