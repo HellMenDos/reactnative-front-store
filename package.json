@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@expo/vector-icons": "~10.2.0",
+    "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.2",
     "@react-navigation/native": "^5.8.10",
@@ -10,6 +11,7 @@
     "react": "~16.13.0",
     "react-dom": "~16.13.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.2.tar.gz",
+    "react-native-cookies": "^3.3.0",
     "react-native-elements": "^3.0.1",
     "react-native-gesture-handler": "^1.7.0",
     "react-native-reanimated": "^1.13.2",

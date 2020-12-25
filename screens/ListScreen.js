@@ -25,7 +25,12 @@ fetch('http://127.0.0.1:8000/api/allProducts')
     .then((json) => {
  
     	 this.setState({element: json.map((d) =>
-    		<ProductComponent title={d.title}  describe={d.describe} id={d.id} price={d.price} route={this.props.navigation} photo={d.photos[0].url}/>
+    		<ProductComponent 
+        title={d.title}  
+        describe={d.describe} 
+        id={d.id} price={d.price} 
+        route={this.props.navigation} 
+        photo={d.photos[0].url}/>
   		)
     })
     })
@@ -40,7 +45,13 @@ searhFunction(e) {
     .then((json) => {
  
     	 this.setState({element: json.map((d) =>
-    		<ProductComponent title={d.title} describe={d.describe} id={d.id} price={d.price} route={this.props.navigation} photo={d.photos[0].url}/>
+    		<ProductComponent 
+        title={d.title} 
+        describe={d.describe} 
+        id={d.id} 
+        price={d.price} 
+        route={this.props.navigation} 
+        photo={d.photos[0].url}/>
   		)
     })
     })

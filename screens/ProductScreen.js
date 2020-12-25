@@ -6,7 +6,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import CommentComponent from '../components/CommentComponent'
-import CountComponent from '../components/CountComponent'
 
 export default class ProductScreen extends React.Component {
 
@@ -15,7 +14,10 @@ super(props)
 
 this.state = {
   element: [],
-  
+  comments: [],
+  counter: 1,
+  amount: 0,
+  price: 0
 }
 
 }
@@ -25,8 +27,17 @@ componentDidMount() {
 fetch('http://127.0.0.1:8000/api/product/'+this.props.route.params?.id)
     .then((response) => response.json())
     .then((json) => {
- 
-       this.setState({element: json })
+
+       this.setState({
+        element: json,
+        amount: parseInt(json.price),
+        price: parseInt(json.price),
+        comments: json.comments.map((d)=>  
+          <CommentComponent 
+          title={d.title} 
+          describe={d.describe}  
+          raiting={d.raiting}  /> )
+      })
 
     })
     .catch((error) => {
@@ -35,23 +46,53 @@ fetch('http://127.0.0.1:8000/api/product/'+this.props.route.params?.id)
 
 }
 
+decriment() {
+  if(this.state.counter != 1) {
+    this.setState({
+      counter: parseInt(this.state.counter) - 1,
+      price: this.state.price - this.state.amount 
+    })
+  }
+}
+increment() {
+  this.setState({
+    counter: this.state.counter + 1,
+    price: this.state.price + this.state.amount 
+  })
+}
+
+
+
 render() {
   	return (
   	<SafeAreaView>
   		<ScrollView>
-		    <View  style={styles.maincontainer}>
+        <View  style={styles.maincontainer}>
 		    	<View style={styles.container}>
 			    	<Image source={require('../images/ps5.jpg')} style={styles.image} />
 					<View style={styles.firstcontainer}>
 						<View style={styles.productFirstInfo}>
 							<Text style={styles.titleh1}>{this.state.element.title}</Text>
 							<Text style={styles.describep}>
-							{this.state.element.price}
+							{this.state.element.describe}
               </Text>
 						</View>
 					</View>
 				</View>
 				
+        <View style={styles.buy}>
+          <View style={styles.buySection}>
+            <View style={styles.buySectionInner}>
+              <Button title="←" color="#1f8adc" onPress={this.decriment.bind(this)}/>      
+              <Text style={styles.inputAmount}>{this.state.counter}</Text>
+              <Button title="→" color="#1f8adc"  onPress={this.increment.bind(this)}/>
+            </View>
+          </View>
+          <View style={styles.costSection}>
+            <Text style={styles.costInner}>{this.state.price}$</Text>
+          </View>
+      </View>
+
 		    </View>
 		    <View style={styles.CommentSection}>
 		    	<Text style={styles.titleh1}>Comments</Text>
@@ -60,7 +101,7 @@ render() {
 		    	<Button title="SEND" color="#1f8adc"  style={styles.SendButton}/>
 		    </View>
 		    <View style={styles.listOfComments}>
-		    	<CommentComponent title='fdfsf' describe='sfsdf' raiting='4' />
+		    	{this.state.comments}
 		    </View>
 		</ScrollView>
 	</SafeAreaView>
@@ -137,5 +178,51 @@ const styles = StyleSheet.create({
   },
   listOfComments: {
   },
+  buySection: {
+    flex: 1, 
+    flexDirection: 'column',
+    backgroundColor: 'white',
+    paddingRight:12,
+    paddingLeft:12,
+    paddingTop:20,
+    paddingBottom:20,
+    marginLeft:15,
+    marginRight:15,
+    borderRadius:30,
+    marginTop: 20,
+    justifyContent:'space-between'
+  },
+  buySectionInner: {
+    flex: 1, 
+    flexDirection: 'row',
+    alignItems:'center',
+    height:50,
 
+    justifyContent:'space-between'
+    
+  },
+    inputAmount: { alignSelf:'center',  borderColor: 'gray',padding:10,textAlign:'center',fontSize:25,width:70 },
+  buy: {
+    flex: 1, 
+    flexDirection: 'row',
+    justifyContent:'space-between'
+  },
+  costSection: {
+    flex: 1, 
+    flexDirection: 'column',
+    borderWidth:2,
+    borderColor: '#ff5454',
+    paddingTop:20,
+    paddingBottom:20,
+    marginRight:15,
+    borderRadius:30,
+    marginTop: 20,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  costInner: {
+    fontSize:35,
+    fontWeight:'bold',
+    color:'#ff5454'
+  },
 });

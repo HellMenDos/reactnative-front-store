@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     fontWeight:'bold'
   },
   commentp: {
-    fontSize: 10
+    fontSize: 10,
+    width:250
   }
 });

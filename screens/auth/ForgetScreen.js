@@ -7,7 +7,24 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 export default class ForgetScreen extends React.Component {
+constructor(props) {
+  super(props);
+  this.state = {
+    email: ''
+  };
+};
 
+forget() {
+  fetch('http://127.0.0.1:8000/api/forget/',{method:"POST",body: JSON.stringify({email: this.state.email })})
+    .then((response) => response.json())
+    .then((json) => {
+        console.log(json)
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+}
 
 render() {
   	return (
@@ -15,9 +32,9 @@ render() {
   		<ScrollView>
           <View style={styles.container}>
               <Text style={styles.cartH1}>Forget password</Text>
-              <Input placeholder='Name' style={{marginTop:30}}/>
+              <Input placeholder='Name' style={{marginTop:30}}  onChangeText={(text) => this.setState({email:text})} />
               <View style={{width:350}}>
-                <Button title="Change"  />
+                <Button title="Change" onPress={this.forget.bind(this)} />
               </View>
           </View>
 		</ScrollView>

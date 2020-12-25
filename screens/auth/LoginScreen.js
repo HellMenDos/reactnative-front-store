@@ -8,6 +8,25 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class LoginScreen extends React.Component {
 
+constructor(props) {
+  super(props);
+  this.state = {
+    email: '',
+    password: ''
+  };
+};
+
+login() {
+  fetch('http://127.0.0.1:8000/api/login/',{method:"POST",body: JSON.stringify({email: this.state.email,password: this.state.password})})
+    .then((response) => response.json())
+    .then((json) => {
+        console.log(json)
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+}
 
 render() {
   	return (
@@ -15,10 +34,10 @@ render() {
   		<ScrollView>
           <View style={styles.container}>
               <Text style={styles.cartH1}>Login</Text>
-              <Input placeholder='Email' style={{marginTop:30}}/>
-              <Input placeholder='Password' style={{marginTop:30}}/>
+              <Input placeholder='Email' style={{marginTop:30}} onChangeText={(text) => this.setState({email:text})}/>
+              <Input placeholder='Password' style={{marginTop:30}} onChangeText={(text) => this.setState({password:text})}/>
               <View style={{width:350}}>
-                <Button title="Login" onPress={() => this.props.navigation.navigate('profile')} buttonStyle={{ marginTop: 10}}/>
+                <Button title="Login" onPress={this.login.bind(this)} buttonStyle={{ marginTop: 10}}/>
                 <Button title="Forgetpassword" onPress={() => this.props.navigation.navigate('forget')} buttonStyle={{ marginTop: 10}}/>
                 <Button title="registr" onPress={() => this.props.navigation.navigate('registr')} buttonStyle={{ marginTop: 10}}/>
               </View>
