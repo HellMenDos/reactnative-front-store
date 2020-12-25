@@ -9,11 +9,11 @@ export default class CountComponent extends React.Component {
 
 constructor(props) {
 super(props)
-
+console.log(this.props.price)
 this.state = {
   counter: 1,
-  amount: 100,
-  price: 100
+  amount: parseInt(this.props.price),
+  price: parseInt(this.props.price)
 }
 }
 

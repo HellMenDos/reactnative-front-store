@@ -10,6 +10,30 @@ import CountComponent from '../components/CountComponent'
 
 export default class ProductScreen extends React.Component {
 
+constructor(props) {
+super(props)
+
+this.state = {
+  element: [],
+  
+}
+
+}
+
+componentDidMount() {
+
+fetch('http://127.0.0.1:8000/api/product/'+this.props.route.params?.id)
+    .then((response) => response.json())
+    .then((json) => {
+ 
+       this.setState({element: json })
+
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+}
 
 render() {
   	return (
@@ -20,13 +44,14 @@ render() {
 			    	<Image source={require('../images/ps5.jpg')} style={styles.image} />
 					<View style={styles.firstcontainer}>
 						<View style={styles.productFirstInfo}>
-							<Text style={styles.titleh1}>Ps5 fist console in russia </Text>
+							<Text style={styles.titleh1}>{this.state.element.title}</Text>
 							<Text style={styles.describep}>
-							Lorem ipsum dolor, sit amet consectetur, adipisicing elit. Officiis sequi repellendus, eos sapiente porro facere sit dolor neque. Maiores, illo. Autem eos quisquam laboriosam deserunt culpa veniam possimus repellendus eius doloremque, ab ducimus quo dicta, dolore maiores optio architecto vitae? Non amet ullam magnam cupiditate veniam recusandae beatae unde, quo corrupti reiciendis, dignissimos id sit aperiam laborum architecto accusantium exercitationem, excepturi tempore, odit reprehenderit adipisci perspiciatis placeat totam. Quas, maxime quod rerum soluta labore neque autem molestiae incidunt earum quaerat a corporis optio quidem unde dolorem commodi rem possimus placeat necessitatibus. Hic perspiciatis unde earum reiciendis repellat quas animi ratione.</Text>
+							{this.state.element.price}
+              </Text>
 						</View>
 					</View>
 				</View>
-				<CountComponent />
+				
 		    </View>
 		    <View style={styles.CommentSection}>
 		    	<Text style={styles.titleh1}>Comments</Text>

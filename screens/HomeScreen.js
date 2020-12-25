@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text,StyleSheet, SafeAreaView, ScrollView,TouchableHighlight } from 'react-native';
 import { Button,Input,Image,Icon,Badge } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
@@ -6,10 +6,24 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import ProductComponent from '../components/ProductComponent'
 
-export default class HomeScreen extends React.Component {
-  	
-render() {
-  	return (
+export default function HomeScreen({ navigation,props }) {
+
+const [data, setData] = useState([]);
+
+useEffect(() => {
+    fetch('http://127.0.0.1:8000/api/allProducts')
+      .then((response) => response.json())
+      .then((json) => setData(json))
+      .catch((error) => console.error(error))
+
+  }, [])
+
+const listItems = data.map((d) =>
+    <ProductComponent title={d.title} describe={d.describe} price={d.price} photo={d.photos[0].url}/>
+  );
+
+
+return (
   	<SafeAreaView>
   		<ScrollView>
 		    <View  style={styles.maincontainer}>
@@ -19,7 +33,7 @@ render() {
 						<TouchableHighlight style={styles.newproducts}>
 							<Image source={require('../images/game.jpg')} style={styles.imageSidebar} />
 						</TouchableHighlight>
-						<TouchableHighlight onPress={() => this.props.navigation.navigate('Product',{id:1})} style={styles.newproducts}>
+						<TouchableHighlight onPress={() => navigation.navigate('Product',{id:1})} style={styles.newproducts}>
 							<Image source={require('../images/console.jpg')} style={styles.imageSidebar} />
 						</TouchableHighlight>
 						<TouchableHighlight style={styles.newproducts}>
@@ -31,19 +45,12 @@ render() {
 					</View>
 				</View>
 				<View>
-					<ProductComponent title='ffff' describe='ffff' price='100$'/>
-					<ProductComponent title='ffff' describe='ffff' price='100$'/>
-					<ProductComponent title='ffff' describe='ffff' price='100$'/>
+					{listItems}
 				</View>
 		    </View>
 		</ScrollView>
 	</SafeAreaView>
   	);
-}
-
-
-
-
 
 }
 

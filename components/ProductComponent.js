@@ -7,9 +7,9 @@ import { TouchableHighlight } from 'react-native';
 
 export default function ProductComponent(props) {
   return (
-  	<TouchableHighlight>
+  	<TouchableHighlight onPress={() => props.route.navigate('Product',{id:props.id})}>
 		<View style={styles.otherproducts}>
-			<Image source={require('../images/custom.jpeg')} style={styles.imageBottom} />
+			<Image source={{uri: `http://127.0.0.1:8000/images/product/${props.photo}`}} style={styles.imageBottom} />
 				<View style={styles.TextBottom}>
 					<Text style={styles.TextH1}>{props.title} </Text>
 					<Text style={styles.TextP}>{props.describe}</Text>
