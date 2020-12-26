@@ -22,34 +22,48 @@ constructor(props) {
   cart: ''
   }
 
+
+}
+
+
+componentDidMount() {
+
   AsyncStorage.getItem('user').then(e=> {
     fetch('http://127.0.0.1:8000/api/user/'+e)
     .then((response) => response.json())
-    .then((json) => {
-      this.setState({ name: json.name, email: json.email, id: json.id})
+      .then((json) => {
+          
+          this.setState({ 
+            name: json.name, 
+            email: json.email, 
+            id: json.id
+          })
 
-      if (json.avatar != undefined) {
-          this.setState({avatar: <Image source={{uri: `http://127.0.0.1:8000/images/${json.avatar}`}} style={{ width:150,height:150 }} /> })
-      }else {
-          this.setState({avatar: <Avatar size="xlarge" icon={{name: 'rocket', color: 'orange', type: 'font-awesome'}} overlayContainerStyle={{backgroundColor: 'white'}} onPress={() => console.log("Works!")} activeOpacity={0.7} /> })
-      }
+          if (json.avatar != undefined) {
+              this.setState({avatar: <Image source={{uri: `http://127.0.0.1:8000/images/${json.avatar}`}} style={{ width:150,height:150 }} /> })
+          }else {
+              this.setState({avatar: <Avatar size="xlarge" icon={{name: 'rocket', color: 'orange', type: 'font-awesome'}} overlayContainerStyle={{backgroundColor: 'white'}} onPress={() => console.log("Works!")} activeOpacity={0.7} /> })
+          }
 
-   fetch('http://127.0.0.1:8000/api/cart/'+json.id)
-    .then((response) => response.json())
-    .then((json) => {
-     this.setState({cart: json.map((d)=> <CartComponent title={d.product[0].title} describe={d.product[0].describe} id={d.product[0].id} price={d.product[0].price} />  )})
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+           fetch('http://127.0.0.1:8000/api/cart/'+json.id)
+            .then((response) => response.json())
+              .then((json) => {
+             this.setState({
+               cart: json.map((d)=> <CartComponent title={d.product[0].title} describe={d.product[0].describe} id={d.product[0].id} price={d.product[0].price} />  )
+             })
+            })
+            .catch((error) => {
+              console.error(error);
+            });
 
 
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+            })
+            .catch((error) => {
+              console.error(error);
+            });
 
   })
+
 }
 
 change() {

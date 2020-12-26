@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 export default class ForgetScreen extends React.Component {
+  
 constructor(props) {
   super(props);
   this.state = {
@@ -20,7 +21,9 @@ forget() {
     .then((response) => response.json())
     .then((json) => {
         if (json.success) {
-          this.setState({success: <Badge status="success" value={<Text>Check your email</Text>} />})
+          this.setState({
+            success: <Badge status="success" value={<Text>Check your email</Text>} />
+          })
         }
     })
     .catch((error) => {

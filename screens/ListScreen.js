@@ -31,27 +31,27 @@ componentDidMount() {
         input = 'http://127.0.0.1:8000/api/getproducts/'+ this.props.route.params?.input
      }
 
-fetch(input)
-    .then((response) => response.json())
-    .then((json) => {
+    fetch(input)
+        .then((response) => response.json())
+            .then((json) => {
  
-    	 this.setState({element: json.map((d) =>
-    		<ProductComponent 
-        title={d.title}  
-        describe={d.describe} 
-        id={d.id} price={d.price} 
-        route={this.props.navigation} 
-        photo={d.photos[0].url}/>
-  		)
-    })
-    })
+        	 this.setState({element: json.map((d) =>
+        		<ProductComponent 
+            title={d.title}  
+            describe={d.describe} 
+            id={d.id} price={d.price} 
+            route={this.props.navigation} 
+            photo={d.photos[0].url}/>
+      		)
+            })
+        })
     .catch((error) => {
       console.error(error);
     });
 
 }
 searhFunction(e) {
-    var input
+    var input;
     if (e.target.value.length == 0) {
         input = 'http://127.0.0.1:8000/api/allProducts'
     }else {
@@ -59,20 +59,20 @@ searhFunction(e) {
     }
 
 	fetch(input)
-    .then((response) => response.json())
-    .then((json) => {
+        .then((response) => response.json())
+            .then((json) => {
  
-    	 this.setState({element: json.map((d) =>
-    		<ProductComponent 
-        title={d.title} 
-        describe={d.describe} 
-        id={d.id} 
-        price={d.price} 
-        route={this.props.navigation} 
-        photo={d.photos[0].url}/>
-  		)
-    })
-    })
+        	 this.setState({element: json.map((d) =>
+        		<ProductComponent 
+            title={d.title} 
+            describe={d.describe} 
+            id={d.id} 
+            price={d.price} 
+            route={this.props.navigation} 
+            photo={d.photos[0].url}/>
+      		)
+            })
+        })
     .catch((error) => {
       console.error(error);
     });
@@ -99,7 +99,7 @@ render() {
 }
 }
 
-const width = Dimensions.get('window').width
+
 
 const styles = StyleSheet.create({
  searchSection: {

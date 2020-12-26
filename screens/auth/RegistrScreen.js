@@ -29,10 +29,12 @@ registr() {
         if (json.error) {
           var error = Object.keys(json.error)[0];
 
-          this.setState({error: <Badge status="error" value={<Text>{json.error[error][0]}</Text>} />})
+          this.setState({
+            error: <Badge status="error" value={<Text>{json.error[error][0]}</Text>} />
+          })
         }else {
         
-       await AsyncStorage.setItem('user', json.success.id);
+          await AsyncStorage.setItem('user', json.success.id);
           this.props.navigation.navigate('profile')
         }
     })

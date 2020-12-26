@@ -17,23 +17,35 @@ constructor(props) {
     error: ''
   };
 
+
+};
+
+
+componentDidMount() {
+
   AsyncStorage.getItem('user').then(e=> {
     if (e != null) {
       this.props.navigation.navigate('profile')
     }
   })
-};
+
+}
+
 
 login() {
+  
   fetch('http://127.0.0.1:8000/api/login/',{method:"POST",body: JSON.stringify({email: this.state.email,password: this.state.password})})
     .then((response) => response.json())
     .then( async (json) => {          
         if (json.error) {
-          this.setState({error: <Badge status="error" value={<Text>{json.error}</Text>} />})
+          this.setState({
+            error: <Badge status="error" value={<Text>{json.error}</Text>} />
+          })
         }else {
         
-       await AsyncStorage.setItem('user', json.success.id);
+          await AsyncStorage.setItem('user', json.success.id);
           this.props.navigation.navigate('Profile')
+
         }
     })
     .catch((error) => {

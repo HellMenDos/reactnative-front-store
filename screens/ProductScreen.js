@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { View, Text,StyleSheet, SafeAreaView, ScrollView,TextInput,Button} from 'react-native';
+import { View, Text,StyleSheet, SafeAreaView, ScrollView,TextInput,Button,TouchableHighlight} from 'react-native';
 import { Image,Badge } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import CommentComponent from '../components/CommentComponent'
-import { TouchableHighlight } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 
 
@@ -28,25 +27,25 @@ this.state = {
 
 componentDidMount() {
 
-fetch('http://127.0.0.1:8000/api/product/'+this.props.route.params?.id)
-    .then((response) => response.json())
-    .then((json) => {
+  fetch('http://127.0.0.1:8000/api/product/'+this.props.route.params?.id)
+      .then((response) => response.json())
+        .then((json) => {
 
-       this.setState({
-        element: json,
-        amount: parseInt(json.price),
-        price: parseInt(json.price),
-        comments: json.comments.map((d)=>  
-          <CommentComponent 
-          title={d.title} 
-          describe={d.describe}  
-          raiting={d.raiting}  /> )
+         this.setState({
+          element: json,
+          amount: parseInt(json.price),
+          price: parseInt(json.price),
+          comments: json.comments.map((d)=>  
+            <CommentComponent 
+            title={d.title} 
+            describe={d.describe}  
+            raiting={d.raiting}  /> )
+        })
+
       })
-
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+      .catch((error) => {
+        console.error(error);
+      });
 
 }
 
@@ -64,18 +63,19 @@ increment() {
     price: this.state.price + this.state.amount 
   })
 }
+
 buy() {
   AsyncStorage.getItem('user').then(e=> {
     if (e != null) {
-  fetch('http://127.0.0.1:8000/api/tocart',{method:'POST',body: JSON.stringify({id:this.props.route.params?.id,iduser:e, amount: this.state.counter})})
-      .then((response) => response.json())
-      .then((json) => {
+      fetch('http://127.0.0.1:8000/api/tocart',{method:'POST',body: JSON.stringify({id:this.props.route.params?.id,iduser:e, amount: this.state.counter})})
+        .then((response) => response.json())
+          .then((json) => {
 
-          this.props.navigation.navigate('Profile')
+              this.props.navigation.navigate('Profile')
         
-      })
-      .catch((error) => console.error(error))
-}
+            })
+            .catch((error) => console.error(error))
+        }
     })
 }
 
